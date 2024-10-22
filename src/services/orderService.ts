@@ -4,14 +4,27 @@ import {orderSchema} from "../validations/orderValidation";
 
 export const orderService = {
     createOrder: (order: OrderWithoutId) => {
-        const {name, customerName, address, status} = order;
-
-        const newOrder = {
-            id: crypto.randomUUID(),
-            name,
-            customerName,
+        const {
+            productName,
+            customerId,
+            providerId,
+            driverId,
+            price,
+            payMethod,
             address,
             status,
+        } = order;
+
+        const newOrder = {
+            id: crypto.randomUUID().slice(0, 6),
+            productName,
+            customerId,
+            providerId,
+            driverId,
+            price,
+            payMethod,
+            status,
+            address,
         };
 
         const result = orderSchema.safeParse(newOrder);
@@ -24,5 +37,17 @@ export const orderService = {
     },
     getAllOrders: (): Order[] => {
         return OrderModel.getAllOrders();
+    },
+    filterByStatus: (desiredStatus: string) => {
+        const allOrders = OrderModel.getAllOrders();
+
+        return allOrders.filter((order) =>
+            desiredStatus.includes(order.status)
+        );
+    },
+    findById: (id: string) => {
+        const allOrders = OrderModel.getAllOrders();
+
+        return allOrders.find((order) => order.id === id.toLowerCase());
     },
 };

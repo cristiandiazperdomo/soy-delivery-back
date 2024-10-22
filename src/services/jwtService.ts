@@ -57,8 +57,6 @@ export const jwtService = {
                 emailAndTokenInfo.info = decoded;
         });
 
-        console.log("emailAndTokenInfo", emailAndTokenInfo);
-
         return emailAndTokenInfo;
     },
 };

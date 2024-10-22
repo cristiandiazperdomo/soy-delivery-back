@@ -1,6 +1,6 @@
 export const Status = [
     "waiting",
-    "pendent",
+    "pending",
     "in progress",
     "delivered",
     "cancelled",
@@ -8,15 +8,21 @@ export const Status = [
     "reported",
 ] as const;
 
+export const PayMethod = ["cash", "card"] as const;
+
 export interface Order {
     id: string;
-    customerName: string;
-    name: string;
+    productName: string;
+    customerId: string;
+    providerId: string;
+    driverId: string;
     status: (typeof Status)[number];
+    price: number;
+    payMethod: (typeof PayMethod)[number];
     address: string;
 }
 
 export type OrderWithoutId = Omit<Order, "id">;
+
 // EXPLICACÓN DE PORQUE OMIT ES UN TYPE Y NO UNA INTERFACE.
-/* La manipulación avanzada de tipos (como omitir propiedades) requiere el uso de type. 
-ESTO SE DEBE a que LAS INTERFACES NO SOPORTAN TRANSFORMACIONES DINÁMICAS. */
+// LAS INTERFACES NO SOPORTAN TRANSFORMACIONES DINÁMICAS.

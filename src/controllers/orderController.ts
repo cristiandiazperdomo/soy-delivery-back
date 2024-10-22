@@ -15,4 +15,18 @@ export const orderController = {
             }
         }
     },
+    filterByStatus: (req: Request, res: Response) => {
+        try {
+            res.json(orderService.filterByStatus(req.params.status));
+        } catch (error) {
+            if (error instanceof Error) res.send(error);
+        }
+    },
+    findById: (req: Request, res: Response) => {
+        try {
+            res.json(orderService.findById(req.params.id));
+        } catch (error) {
+            if (error instanceof Error) res.send(error);
+        }
+    },
 };

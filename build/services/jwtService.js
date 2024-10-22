@@ -73,7 +73,6 @@ exports.jwtService = {
             if (decoded != undefined && typeof decoded != "string")
                 emailAndTokenInfo.info = decoded;
         });
-        console.log("emailAndTokenInfo", emailAndTokenInfo);
         return emailAndTokenInfo;
     },
 };

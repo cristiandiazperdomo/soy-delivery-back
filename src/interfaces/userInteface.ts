@@ -1,4 +1,4 @@
-export const Roles = ["admin", "dealer", "client"] as const;
+export const Roles = ["admin", "dealer", "business", "customer"] as const;
 
 /* as const: tipo literal inmutable - PORQUE SON READ-ONLY */
 
@@ -7,6 +7,7 @@ export const Roles = ["admin", "dealer", "client"] as const;
 export interface User {
     id: string;
     name: string;
+    address?: string;
     email: string;
     role: (typeof Roles)[number]; // number le dice que puede acceder a cada una de las posiciones
     password: string;
