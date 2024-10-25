@@ -5,14 +5,7 @@ const userModel_1 = require("../model/userModel");
 const userValidation_1 = require("../validations/userValidation");
 exports.registerService = {
     createUser: (user) => {
-        const { name, email, password, role } = user;
-        const result = userValidation_1.UserSchema.safeParse({
-            id: crypto.randomUUID(),
-            name,
-            email,
-            password,
-            role,
-        });
+        const result = userValidation_1.UserSchema.safeParse(Object.assign(Object.assign({}, user), { id: crypto.randomUUID() }));
         if (!result.success) {
             throw new Error(`Validation error: ${result.error.message}`);
         }

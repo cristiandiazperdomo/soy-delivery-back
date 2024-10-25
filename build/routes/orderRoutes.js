@@ -8,4 +8,6 @@ const orderController_1 = require("../controllers/orderController");
 const router = express_1.default.Router();
 router.post("/", orderController_1.orderController.createOrder);
 router.get("/", orderController_1.orderController.getAllOrders);
+router.get("/status/:status", orderController_1.orderController.filterByStatus);
+router.get("/:id", orderController_1.orderController.findById);
 exports.default = router;

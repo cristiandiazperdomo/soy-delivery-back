@@ -9,19 +9,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userService = void 0;
-const userModel_1 = require("../model/userModel");
-exports.userService = {
-    getAllUser: () => __awaiter(void 0, void 0, void 0, function* () {
-        const allUsers = yield userModel_1.UserModel.getAll();
-        if (!allUsers)
-            throw new Error("No users");
-        return allUsers;
+exports.customerService = void 0;
+const customerModel_1 = require("../model/customerModel");
+const customerValidation_1 = require("../validations/customerValidation");
+exports.customerService = {
+    getAllCustomers: () => __awaiter(void 0, void 0, void 0, function* () {
+        return yield customerModel_1.CustomerModel.getAllCustomers();
     }),
-    findByEmail: (email) => {
-        return userModel_1.UserModel.findByEmail(email);
-    },
-    findById: (id) => {
-        return userModel_1.UserModel.findById(id);
+    createCustomer: (customer) => {
+        const result = customerValidation_1.customerSchema.safeParse(Object.assign(Object.assign({}, customer), { id: crypto.randomUUID() }));
+        if (!result.success) {
+            throw new Error("Validation error: " + result.error.message);
+        }
+        customerModel_1.CustomerModel.create(result.data);
     },
 };

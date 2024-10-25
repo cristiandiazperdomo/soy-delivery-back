@@ -9,19 +9,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userService = void 0;
-const userModel_1 = require("../model/userModel");
-exports.userService = {
-    getAllUser: () => __awaiter(void 0, void 0, void 0, function* () {
-        const allUsers = yield userModel_1.UserModel.getAll();
-        if (!allUsers)
-            throw new Error("No users");
-        return allUsers;
+exports.customerController = void 0;
+const customerService_1 = require("../services/customerService");
+exports.customerController = {
+    getAllCustomers: (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        res.send(yield customerService_1.customerService.getAllCustomers());
     }),
-    findByEmail: (email) => {
-        return userModel_1.UserModel.findByEmail(email);
-    },
-    findById: (id) => {
-        return userModel_1.UserModel.findById(id);
+    createCustomer: (req, res) => {
+        try {
+            customerService_1.customerService.createCustomer(req.body);
+        }
+        catch (error) {
+            if (error instanceof Error)
+                throw new Error(error.message);
+        }
+        res.status(201).send(req.body);
     },
 };

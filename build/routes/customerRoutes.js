@@ -3,10 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const userController_1 = require("../controllers/userController");
 const express_1 = __importDefault(require("express"));
+const customerController_1 = require("../controllers/customerController");
 const router = express_1.default.Router();
-router.get("/", userController_1.userController.getAllUsers);
-router.get("/:id", userController_1.userController.findById);
-router.get("/email/:email", userController_1.userController.findByEmail);
+router.get("/", customerController_1.customerController.getAllCustomers);
+router.post("/", customerController_1.customerController.createCustomer);
 exports.default = router;

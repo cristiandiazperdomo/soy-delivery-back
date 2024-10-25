@@ -4,13 +4,19 @@ import {userService} from "./userService";
 import bcrypt from "bcrypt";
 
 export const loginService = {
-    login: (loginRequest: LoginRequest): Promise<boolean> => {
+    login: async (loginRequest: LoginRequest): Promise<boolean> => {
         const {email, password} = loginRequest;
 
-        const user = userService.findByEmail(email);
+        const user = await userService.findByEmail(email);
 
-        if (user === undefined) throw new Error("This email doesn't exist");
+        if (
+            user &&
+            typeof user.email === "string" &&
+            typeof user.password === "string"
+        ) {
+            return await bcrypt.compare(password, user.password);
+        }
 
-        return bcrypt.compare(password, user.password);
+        throw new Error("This email doesn't exist");
     },
 };

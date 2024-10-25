@@ -6,11 +6,10 @@ export const registerController = {
     createUser: (req: Request, res: Response) => {
         try {
             registerService.createUser(req.body);
+            res.status(201).json(jwtService.createToken(req.body.email));
         } catch (error) {
             if (error instanceof Error) res.status(400).send(error.message);
-            return;
         }
 
-        res.status(201).json(jwtService.createToken(req.body.email));
     },
 };

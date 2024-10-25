@@ -2,7 +2,7 @@ import {z} from "zod";
 import {PayMethod, Status} from "../interfaces/orderInterface";
 
 export const orderSchema = z.object({
-    id: z.string().uuid(),
+    id: z.string(),
     productName: z
         .string()
         .min(2, "Product name must be longer than 1 character"),

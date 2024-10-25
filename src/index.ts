@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import {ResultSetHeader} from "mysql2/promise";
 import userRoutes from "./routes/userRoutes";
 import orderRoutes from "./routes/orderRoutes";
-import customerRoutes from "./routes/customerRoutes";
 import registerRoutes from "./routes/auth/registerRoutes";
 import loginRoutes from "./routes/auth/loginRoutes";
 import jwtRoutes from "./routes/auth/jwtRoutes";
@@ -27,7 +26,6 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/auth/register", registerRoutes);
 app.use("/api/auth/login", loginRoutes);
 app.use("/api/auth/jwt", jwtRoutes);
-app.use("/api/customers", customerRoutes);
 
 app.get("/ping", async (_req: Request, res: Response) => {
     try {

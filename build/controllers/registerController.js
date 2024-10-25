@@ -7,12 +7,11 @@ exports.registerController = {
     createUser: (req, res) => {
         try {
             registerService_1.registerService.createUser(req.body);
+            res.status(201).json(jwtService_1.jwtService.createToken(req.body.email));
         }
         catch (error) {
             if (error instanceof Error)
                 res.status(400).send(error.message);
-            return;
         }
-        res.status(201).json(jwtService_1.jwtService.createToken(req.body.email));
     },
 };

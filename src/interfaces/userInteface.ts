@@ -1,17 +1,32 @@
-export const Roles = ["admin", "dealer", "business", "customer"] as const;
+export enum RolesWithPassword {
+    Admin = "admin",
+    Dealer = "dealer",
+    Business = "business",
+}
 
-/* as const: tipo literal inmutable - PORQUE SON READ-ONLY */
+export enum RolesWithoutPassword {
+    Customer = "customer",
+}
 
-/* UN TIPADO LITERAL SIGNIFICA QUE SE RESTRINGEN LOS VALORES POSIBLES */
-
-export interface User {
+export interface BaseUser {
     id: string;
     name: string;
-    address?: string;
     email: string;
-    role: (typeof Roles)[number]; // number le dice que puede acceder a cada una de las posiciones
+    address?: string;
+    phoneNumber?: string;
+}
+
+export interface UserWithPassword extends BaseUser {
+    role: RolesWithPassword;
     password: string;
 }
 
-export type NewUser = Omit<User, "id">;
-export type NonSensitiveUserInfo = Omit<User, "password">;
+export interface Customer extends BaseUser {
+    role: RolesWithoutPassword;
+    password?: never;
+}
+
+export type NewUser = Omit<UserWithPassword, "id">;
+export type NonSensitiveUserInfo = Omit<UserWithPassword, "password">;
+
+export type CustomerWithoutId = Omit<Customer, "id">;

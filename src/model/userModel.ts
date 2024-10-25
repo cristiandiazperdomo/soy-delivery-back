@@ -1,34 +1,65 @@
-import {User} from "../interfaces/userInteface";
+import {RowDataPacket} from "mysql2";
+import {pool} from "../connection";
+import {Customer, UserWithPassword} from "../interfaces/userInteface";
 import bcrypt from "bcrypt";
-let users: User[] = [
-    {
-        id: "d227a3a3-484a-4e90-b621-781b5d8928b5",
-        name: "cristian",
-        address: "Praza Iván, 78, 3º",
-        role: "business",
-        email: "cristian@gmail.com",
-        password: "123456",
-    },
-    {
-        id: "a07ef452-9080-4059-81b1-ce809fb743a4",
-        name: "danubio",
-        address: "Avenida Ander, 5, 24º B",
-        role: "dealer",
-        email: "danubio@gmail.com",
-        password: "123456",
-    },
-];
 
 export const UserModel = {
-    getAll: () => users,
-    findByEmail: (email: string): User | undefined =>
-        users.find((user) => user.email === email),
-    create: (user: User) => {
-        bcrypt.hash(user.password, 10, (_error, hash) => {
-            users.push({
-                ...user,
-                password: hash,
+    getAll: async () => {
+        const [rows] = await pool.query("SELECT * FROM user;");
+        return rows;
+    },
+    getAllUsersByRole: async (role: string) => {
+        const [rows] = await pool.query<RowDataPacket[]>(
+            "SELECT * FROM user WHERE role = ?;",
+            role
+        );
+
+        return rows;
+    },
+    findByEmail: async (email: string) => {
+        const [rows] = await pool.query<RowDataPacket[]>(
+            "SELECT * FROM user WHERE email = ?;",
+            email
+        );
+
+        return rows[0];
+    },
+    findById: async (id: string) => {
+        const [rows] = await pool.query<RowDataPacket[]>(
+            "SELECT * FROM user WHERE id = ?;",
+            id
+        );
+
+        return rows[0];
+    },
+    create: (user: UserWithPassword | Customer) => {
+        const sql =
+            "INSERT INTO user (id, name, address, email, phoneNumber, role, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        if (user.role === "customer") {
+            console.log(user);
+            pool.execute(sql, [
+                user.id,
+                user.name,
+                user.address,
+                user.email,
+                null,
+                user.role,
+                null,
+            ]);
+        } else {
+            bcrypt.hash(user.password, 10, (error, hash) => {
+                if (error) throw new Error(error.message);
+
+                const values = [
+                    user.id,
+                    user.name,
+                    user.email,
+                    user.address,
+                    user.role,
+                    hash,
+                ];
+                pool.execute(sql, values);
             });
-        });
+        }
     },
 };

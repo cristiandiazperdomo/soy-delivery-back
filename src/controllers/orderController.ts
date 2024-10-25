@@ -2,8 +2,8 @@ import {Request, Response} from "express";
 import {orderService} from "../services/orderService";
 
 export const orderController = {
-    getAllOrders: (_req: Request, res: Response) => {
-        res.json(orderService.getAllOrders());
+    getAllOrders: async (_req: Request, res: Response) => {
+        res.json(await orderService.getAllOrders());
     },
     createOrder: (req: Request, res: Response) => {
         try {
@@ -15,16 +15,16 @@ export const orderController = {
             }
         }
     },
-    filterByStatus: (req: Request, res: Response) => {
+    filterByStatus: async (req: Request, res: Response) => {
         try {
-            res.json(orderService.filterByStatus(req.params.status));
+            res.json(await orderService.filterByStatus(req.params.status));
         } catch (error) {
             if (error instanceof Error) res.send(error);
         }
     },
-    findById: (req: Request, res: Response) => {
+    findById: async (req: Request, res: Response) => {
         try {
-            res.json(orderService.findById(req.params.id));
+            res.json(await orderService.findById(req.params.id));
         } catch (error) {
             if (error instanceof Error) res.send(error);
         }
