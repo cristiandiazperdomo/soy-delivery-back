@@ -73,12 +73,25 @@ export const OrderModel = {
             [id]
         );
 
+        if (rows.length === 0)
+            throw new Error("There is not an order with that id");
+
         return rows[0];
     },
     filterByStatus: async (desiredStatus: string) => {
+        let baseQuery = "SELECT * FROM `order` WHERE status IN ";
+
+        const multipleStatuses = desiredStatus
+            .split("-")
+            .filter((status) => status !== "");
+
+        const queryParams = multipleStatuses.map(() => "?").join(", ");
+
+        baseQuery += "(" + queryParams + ")";
+
         const [rows] = await pool.query<RowDataPacket[]>(
-            "SELECT * FROM `order` WHERE status = ?;",
-            [desiredStatus]
+            baseQuery,
+            multipleStatuses
         );
 
         return rows;

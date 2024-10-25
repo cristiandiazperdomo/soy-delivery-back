@@ -26,7 +26,13 @@ export const orderController = {
         try {
             res.json(await orderService.findById(req.params.id));
         } catch (error) {
-            if (error instanceof Error) res.send(error);
+            if (error instanceof Error) {
+                if (error.message === "There is not an order with that id") {
+                    res.status(404).json(error.message);
+                    return;
+                }
+                if (error instanceof Error) res.json(error);
+            }
         }
     },
 };
