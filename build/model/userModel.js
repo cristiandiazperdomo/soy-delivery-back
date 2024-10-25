@@ -17,7 +17,11 @@ const connection_1 = require("../connection");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 exports.UserModel = {
     getAll: () => __awaiter(void 0, void 0, void 0, function* () {
-        const [rows] = yield connection_1.pool.query("SELECT * FROM  user;");
+        const [rows] = yield connection_1.pool.query("SELECT * FROM user;");
+        return rows;
+    }),
+    getAllUsersByRole: (role) => __awaiter(void 0, void 0, void 0, function* () {
+        const [rows] = yield connection_1.pool.query("SELECT * FROM user WHERE role = ?;", role);
         return rows;
     }),
     findByEmail: (email) => __awaiter(void 0, void 0, void 0, function* () {
@@ -28,20 +32,34 @@ exports.UserModel = {
         const [rows] = yield connection_1.pool.query("SELECT * FROM user WHERE id = ?;", id);
         return rows[0];
     }),
-    create: (user) => {
-        const sql = "INSERT INTO user (id, name, address, email, role, password) VALUES (?, ?, ?, ?, ?, ?)";
-        bcrypt_1.default.hash(user.password, 10, (error, hash) => {
-            if (error)
-                throw new Error(error.message);
-            const values = [
+    create: (user) => __awaiter(void 0, void 0, void 0, function* () {
+        const sql = "INSERT INTO user (id, name, address, email, phoneNumber, role, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        if (user.role === "customer") {
+            yield connection_1.pool.execute(sql, [
                 user.id,
                 user.name,
-                user.email,
                 user.address,
+                user.email,
+                null,
                 user.role,
-                hash,
-            ];
-            connection_1.pool.execute(sql, values);
-        });
-    },
+                null,
+            ]);
+        }
+        else {
+            yield bcrypt_1.default.hash(user.password, 10, (error, hash) => {
+                if (error)
+                    throw new Error(error.message);
+                const values = [
+                    user.id,
+                    user.name,
+                    user.address,
+                    user.email,
+                    null,
+                    user.role,
+                    hash,
+                ];
+                connection_1.pool.execute(sql, values);
+            });
+        }
+    }),
 };

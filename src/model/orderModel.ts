@@ -20,7 +20,28 @@ export const OrderModel = {
         ]);
     },
     getAllOrders: async () => {
-        const [rows] = await pool.query("SELECT * FROM `order`;");
+        const [rows] = await pool.query(
+            `SELECT
+                o.id,
+                o.productName,
+                o.price,
+                o.payMethod,
+                o.address,
+                o.status,
+                provider.name AS providerName, 
+                driver.name AS driverName,
+                customer.name AS customerName
+            FROM ` +
+                "`order`" +
+                ` AS o 
+                LEFT JOIN user provider
+                    ON o.providerId = provider.id
+                LEFT JOIN user customer
+                    ON o.customerId = customer.id
+                LEFT JOIN user driver
+                    ON o.driverId = driver.id
+                ;`
+        );
         return rows;
     },
     filterById: async (id: string) => {

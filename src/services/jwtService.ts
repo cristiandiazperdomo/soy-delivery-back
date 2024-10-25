@@ -48,12 +48,12 @@ export const jwtService = {
                     );
                 } else {
                     throw new Error(
-                        "Error desconocido durante la verificación del token."
+                        "Unknown error in runtime error token verification"
                     );
                 }
             }
 
-            if (decoded != undefined && typeof decoded != "string")
+            if (decoded !== undefined && typeof decoded != "string")
                 emailAndTokenInfo.info = decoded;
         });
 

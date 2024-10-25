@@ -21,6 +21,19 @@ exports.userController = {
                 res.send(error.message);
         }
     }),
+    createCustomer: (req, res) => {
+        try {
+            userService_1.userService.createCustomer(req.body);
+        }
+        catch (error) {
+            if (error instanceof Error)
+                throw new Error(error.message);
+        }
+        res.status(201).json(req.body);
+    },
+    getAllUsersByRole: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        res.json(yield userService_1.userService.getAllUsersByRole(req.params.role));
+    }),
     findByEmail: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.json(yield userService_1.userService.findByEmail(req.params.email));
     }),

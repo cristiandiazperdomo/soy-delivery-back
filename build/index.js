@@ -17,7 +17,6 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const orderRoutes_1 = __importDefault(require("./routes/orderRoutes"));
-const customerRoutes_1 = __importDefault(require("./routes/customerRoutes"));
 const registerRoutes_1 = __importDefault(require("./routes/auth/registerRoutes"));
 const loginRoutes_1 = __importDefault(require("./routes/auth/loginRoutes"));
 const jwtRoutes_1 = __importDefault(require("./routes/auth/jwtRoutes"));
@@ -35,7 +34,6 @@ app.use("/api/orders", orderRoutes_1.default);
 app.use("/api/auth/register", registerRoutes_1.default);
 app.use("/api/auth/login", loginRoutes_1.default);
 app.use("/api/auth/jwt", jwtRoutes_1.default);
-app.use("/api/customers", customerRoutes_1.default);
 app.get("/ping", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const [rows] = yield connection_1.pool.query("SELECT * FROM `order` LIMIT 20;");
