@@ -66,7 +66,7 @@ export const OrderModel = {
                 user AS driver 
                     ON o.driverId = driver.id 
             LEFT JOIN 
-                customer
+                user AS customer
                     ON o.customerId = customer.id 
             WHERE 
                 o.id = ?;`,
