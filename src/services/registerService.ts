@@ -3,7 +3,7 @@ import {UserModel} from "../model/userModel";
 import {UserWithPasswordSchema} from "../validations/userValidation";
 
 export const registerService = {
-    createUser: (user: NewUser) => {
+    createUser: async (user: NewUser) => {
         const result = UserWithPasswordSchema.safeParse({
             ...user,
             id: crypto.randomUUID(),
@@ -13,6 +13,6 @@ export const registerService = {
             throw new Error(`Validation error: ${result.error.message}`);
         }
 
-        UserModel.create(result.data);
+        await UserModel.create(result.data);
     },
 };

@@ -3,13 +3,12 @@ import {registerService} from "../services/registerService";
 import {jwtService} from "../services/jwtService";
 
 export const registerController = {
-    createUser: (req: Request, res: Response) => {
+    createUser: async (req: Request, res: Response) => {
         try {
-            registerService.createUser(req.body);
+            await registerService.createUser(req.body);
             res.status(201).json(jwtService.createToken(req.body.email));
         } catch (error) {
             if (error instanceof Error) res.status(400).send(error.message);
         }
-
     },
 };

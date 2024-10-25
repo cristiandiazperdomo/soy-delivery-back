@@ -32,12 +32,11 @@ export const UserModel = {
 
         return rows[0];
     },
-    create: (user: UserWithPassword | Customer) => {
+    create: async (user: UserWithPassword | Customer) => {
         const sql =
             "INSERT INTO user (id, name, address, email, phoneNumber, role, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
         if (user.role === "customer") {
-            console.log(user);
-            pool.execute(sql, [
+            await pool.execute(sql, [
                 user.id,
                 user.name,
                 user.address,
@@ -47,14 +46,15 @@ export const UserModel = {
                 null,
             ]);
         } else {
-            bcrypt.hash(user.password, 10, (error, hash) => {
+            await bcrypt.hash(user.password, 10, (error, hash) => {
                 if (error) throw new Error(error.message);
 
                 const values = [
                     user.id,
                     user.name,
-                    user.email,
                     user.address,
+                    user.email,
+                    null,
                     user.role,
                     hash,
                 ];
