@@ -33,6 +33,8 @@ export const UserModel = {
         return rows[0];
     },
     create: async (user: UserWithPassword | Customer) => {
+        console.log(user);
+
         const sql =
             "INSERT INTO user (id, name, address, email, phoneNumber, role, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
         if (user.role === "customer") {
@@ -52,7 +54,7 @@ export const UserModel = {
                 const values = [
                     user.id,
                     user.name,
-                    user.address,
+                    user.address ? user.address : null,
                     user.email,
                     null,
                     user.role,
