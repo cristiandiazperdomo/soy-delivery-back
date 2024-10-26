@@ -7,7 +7,7 @@ export const loginService = {
     login: async (loginRequest: LoginRequest): Promise<boolean> => {
         const {email, password} = loginRequest;
 
-        const user = await userService.findByEmail(email);
+        const user = await userService.findUserByEmailWithPassword(email);
 
         if (
             user &&

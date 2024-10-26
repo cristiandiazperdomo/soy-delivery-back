@@ -23,6 +23,3 @@ export interface Order {
 }
 
 export type OrderWithoutId = Omit<Order, "id">;
-
-// EXPLICACÓN DE PORQUE OMIT ES UN TYPE Y NO UNA INTERFACE.
-// LAS INTERFACES NO SOPORTAN TRANSFORMACIONES DINÁMICAS.

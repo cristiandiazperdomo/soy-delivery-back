@@ -29,6 +29,9 @@ export const userService = {
     findByEmail: (email: string) => {
         return UserModel.findByEmail(email);
     },
+    findUserByEmailWithPassword: (email: string) => {
+        return UserModel.findUserByEmailWithPassword(email);
+    },
     findById: (id: string) => {
         return UserModel.findById(id);
     },

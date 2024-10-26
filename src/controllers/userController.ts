@@ -13,7 +13,7 @@ export const userController = {
         try {
             userService.createCustomer(req.body);
         } catch (error) {
-            if (error instanceof Error) throw new Error(error.message);
+            if (error instanceof Error) res.json(error.message);
         }
 
         res.status(201).json(req.body);

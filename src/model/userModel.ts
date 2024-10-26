@@ -5,12 +5,12 @@ import bcrypt from "bcrypt";
 
 export const UserModel = {
     getAll: async () => {
-        const [rows] = await pool.query("SELECT * FROM user;");
+        const [rows] = await pool.query("SELECT id, name, email FROM user;");
         return rows;
     },
     getAllUsersByRole: async (role: string) => {
         const [rows] = await pool.query<RowDataPacket[]>(
-            "SELECT * FROM user WHERE role = ?;",
+            "SELECT id, name, email FROM user WHERE role = ?;",
             role
         );
 
@@ -18,7 +18,15 @@ export const UserModel = {
     },
     findByEmail: async (email: string) => {
         const [rows] = await pool.query<RowDataPacket[]>(
-            "SELECT * FROM user WHERE email = ?;",
+            "SELECT id, name, email FROM user WHERE email = ?;",
+            email
+        );
+
+        return rows[0];
+    },
+    findUserByEmailWithPassword: async (email: string) => {
+        const [rows] = await pool.query<RowDataPacket[]>(
+            "SELECT email, password FROM user WHERE email = ?;",
             email
         );
 
@@ -26,7 +34,7 @@ export const UserModel = {
     },
     findById: async (id: string) => {
         const [rows] = await pool.query<RowDataPacket[]>(
-            "SELECT * FROM user WHERE id = ?;",
+            "SELECT id, name, email FROM user WHERE id = ?;",
             id
         );
 
@@ -58,6 +66,7 @@ export const UserModel = {
                     user.role,
                     hash,
                 ];
+
                 pool.execute(sql, values);
             });
         }
