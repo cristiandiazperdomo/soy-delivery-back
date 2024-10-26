@@ -1,5 +1,5 @@
-import {JwtResponse} from "../interfaces/jwtResponse";
 import jwt from "jsonwebtoken";
+import {JwtResponse} from "../interfaces/jwt";
 
 export const secretSignature = "mymostsecurepasswordisthisone";
 
