@@ -1,5 +1,5 @@
 import {JwtResponse} from "../interfaces/jwtResponse";
-import jwt, {JsonWebTokenError, TokenExpiredError} from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 export const secretSignature = "mymostsecurepasswordisthisone";
 
@@ -38,19 +38,7 @@ export const jwtService = {
 
         jwt.verify(token, secretSignature, (error: any, decoded) => {
             if (error && error instanceof Error) {
-                if (error instanceof JsonWebTokenError) {
-                    throw new Error(error.message);
-                } else if (error instanceof TokenExpiredError) {
-                    throw new Error(
-                        error.message +
-                            ", expiredAt: " +
-                            new Date(error.expiredAt)
-                    );
-                } else {
-                    throw new Error(
-                        "Unknown error in runtime error token verification"
-                    );
-                }
+                throw error;
             }
 
             if (decoded !== undefined && typeof decoded != "string")
