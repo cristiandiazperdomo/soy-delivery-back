@@ -1,14 +1,18 @@
 import jwt from "jsonwebtoken";
 import {JwtResponse} from "../interfaces/jwt";
 
-export const secretSignature = "mymostsecurepasswordisthisone";
+console.log(process.env.JWT_SIGNATURE);
 
 export const jwtService = {
     createToken: (email: string): JwtResponse => {
-        const token = jwt.sign({data: {email}}, secretSignature, {
-            algorithm: "HS256",
-            expiresIn: "1h",
-        });
+        const token = jwt.sign(
+            {data: {email}},
+            process.env.JWT_SIGNATURE + "",
+            {
+                algorithm: "HS256",
+                expiresIn: "1h",
+            }
+        );
 
         const issuedAt = Math.floor(Date.now() / 1000);
         const ONEHOURSINSECONDS = 3600;
@@ -38,7 +42,7 @@ export const jwtService = {
 
         jwt.verify(
             token,
-            secretSignature,
+            process.env.JWT_SIGNATURE + "",
             (error: jwt.VerifyErrors | null, decoded) => {
                 if (error && error instanceof Error) {
                     throw error;
