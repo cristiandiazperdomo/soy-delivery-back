@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, {VerifyErrors} from "jsonwebtoken";
 import {JwtResponse} from "../interfaces/jwt";
 
 export const secretSignature = "mymostsecurepasswordisthisone";
@@ -36,14 +36,18 @@ export const jwtService = {
             },
         };
 
-        jwt.verify(token, secretSignature, (error: any, decoded) => {
-            if (error && error instanceof Error) {
-                throw error;
-            }
+        jwt.verify(
+            token,
+            secretSignature,
+            (error: jwt.VerifyErrors | null, decoded) => {
+                if (error && error instanceof Error) {
+                    throw error;
+                }
 
-            if (decoded !== undefined && typeof decoded != "string")
-                emailAndTokenInfo.info = decoded;
-        });
+                if (decoded !== undefined && typeof decoded != "string")
+                    emailAndTokenInfo.info = decoded;
+            }
+        );
 
         return emailAndTokenInfo;
     },
