@@ -1,4 +1,4 @@
-import jwt, {VerifyErrors} from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import {JwtResponse} from "../interfaces/jwt";
 
 export const secretSignature = "mymostsecurepasswordisthisone";
