@@ -12,5 +12,5 @@ export interface JwtError {
 }
 
 export interface AuthenticatedRequest extends Request {
-    user?: any;
+    user?: JwtResponse;
 }

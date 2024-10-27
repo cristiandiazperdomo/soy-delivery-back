@@ -1,9 +1,10 @@
 import {Request, Response} from "express";
 import {orderService} from "../services/orderService";
+import {AuthenticatedRequest} from "../interfaces/jwt";
 
 export const orderController = {
-    getAllOrders: async (_req: Request, res: Response) => {
-        res.json(await orderService.getAllOrders());
+    getAllOrders: async (req: AuthenticatedRequest, res: Response) => {
+        res.json(await orderService.getAllOrders(req.user?.info.data.email));
     },
     createOrder: (req: Request, res: Response) => {
         try {

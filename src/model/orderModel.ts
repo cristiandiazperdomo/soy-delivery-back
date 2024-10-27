@@ -19,7 +19,12 @@ export const OrderModel = {
             order.address,
         ]);
     },
-    getAllOrders: async () => {
+    getAllOrders: async (email: string) => {
+        const [reqUserId]: any[] = await pool.query(
+            "SELECT id FROM user WHERE email = ?",
+            [email]
+        );
+
         const [rows] = await pool.query(
             `SELECT
                 o.id,
@@ -34,13 +39,14 @@ export const OrderModel = {
             FROM ` +
                 "`order`" +
                 ` AS o 
-                LEFT JOIN user provider
-                    ON o.providerId = provider.id
-                LEFT JOIN user customer
-                    ON o.customerId = customer.id
-                LEFT JOIN user driver
-                    ON o.driverId = driver.id
-                ;`
+            LEFT JOIN user provider
+                ON o.providerId = provider.id
+            LEFT JOIN user customer
+                ON o.customerId = customer.id
+            LEFT JOIN user driver
+                ON o.driverId = driver.id
+            WHERE o.providerId = ?;`,
+            [reqUserId[0].id]
         );
         return rows;
     },

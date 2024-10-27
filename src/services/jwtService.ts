@@ -1,8 +1,6 @@
 import jwt from "jsonwebtoken";
 import {JwtResponse} from "../interfaces/jwt";
 
-console.log(process.env.JWT_SIGNATURE);
-
 export const jwtService = {
     createToken: (email: string): JwtResponse => {
         const token = jwt.sign(

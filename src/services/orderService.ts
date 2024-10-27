@@ -5,8 +5,8 @@ import {orderSchema} from "../validations/orderValidation";
 export const orderService = {
     createOrder: (order: OrderWithoutId) => {
         const result = orderSchema.safeParse({
+            ...order,
             id: crypto.randomUUID().slice(0, 8),
-            order,
         });
 
         if (!result.success) {
@@ -15,8 +15,8 @@ export const orderService = {
 
         OrderModel.createOrder(result.data);
     },
-    getAllOrders: async () => {
-        return await OrderModel.getAllOrders();
+    getAllOrders: async (email: string) => {
+        return await OrderModel.getAllOrders(email);
     },
     filterByStatus: async (desiredStatus: string) => {
         return await OrderModel.filterByStatus(desiredStatus);
