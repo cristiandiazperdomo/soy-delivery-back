@@ -3,7 +3,7 @@ import {OrderModel} from "../model/orderModel";
 import {orderSchema} from "../validations/orderValidation";
 
 export const orderService = {
-    createOrder: (order: OrderWithoutId) => {
+    createOrder: async (order: OrderWithoutId) => {
         const result = orderSchema.safeParse({
             ...order,
             id: crypto.randomUUID().slice(0, 8),
@@ -13,7 +13,7 @@ export const orderService = {
             throw new Error(`Validation Error: ${result.error.message}`);
         }
 
-        OrderModel.createOrder(result.data);
+        await OrderModel.createOrder(result.data);
     },
     getAllOrders: async (email: string) => {
         return await OrderModel.getAllOrders(email);

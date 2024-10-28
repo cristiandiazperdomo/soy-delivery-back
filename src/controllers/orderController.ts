@@ -6,12 +6,16 @@ export const orderController = {
     getAllOrders: async (req: AuthenticatedRequest, res: Response) => {
         res.json(await orderService.getAllOrders(req.user?.info.data.email));
     },
-    createOrder: (req: Request, res: Response) => {
+    createOrder: async (req: Request, res: Response) => {
         try {
-            orderService.createOrder(req.body);
-            res.json(req.body);
-        } catch (error) {
-            if (error instanceof Error) {
+            await orderService.createOrder(req.body);
+            res.send(req.body);
+        } catch (error: any) {
+            if (error.code === "ER_NO_REFERENCED_ROW_2") {
+                res.status(400).send(
+                    "The customerId, providerId, or driverId does not exist. Please verify that the entered values are correct."
+                );
+            } else {
                 res.status(400).send(error.message);
             }
         }

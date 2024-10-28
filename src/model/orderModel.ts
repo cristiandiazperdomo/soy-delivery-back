@@ -7,7 +7,7 @@ export const OrderModel = {
         const sql =
             "INSERT INTO `order` (id, productName, customerId, providerId, driverId, payMethod, price, status, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
-        pool.execute(sql, [
+        await pool.execute(sql, [
             order.id,
             order.productName,
             order.customerId,
@@ -29,6 +29,7 @@ export const OrderModel = {
             `SELECT
                 o.id,
                 o.productName,
+                o.providerId,
                 o.price,
                 o.payMethod,
                 o.address,
@@ -41,11 +42,11 @@ export const OrderModel = {
                 ` AS o 
             LEFT JOIN user provider
                 ON o.providerId = provider.id
-            LEFT JOIN user customer
+                LEFT JOIN user customer
                 ON o.customerId = customer.id
-            LEFT JOIN user driver
+                LEFT JOIN user driver
                 ON o.driverId = driver.id
-            WHERE o.providerId = ?;`,
+                WHERE o.providerId = ?;`,
             [reqUserId[0].id]
         );
         return rows;
